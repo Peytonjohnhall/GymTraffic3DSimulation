@@ -74,13 +74,13 @@ def lifetime_savage():
 
 	# Create a 3D polygon collection
 	poly3d = [[vertices[vertex] for vertex in face] for face in faces]
-	ax.add_collection3d(Poly3DCollection(poly3d, facecolors="tan", linewidths=1, edgecolors="black", alpha=.50))
+	ax.add_collection3d(Poly3DCollection(poly3d, facecolors = "tan", linewidths = 1, edgecolors = "black", alpha = .50))
 
 	def savage_parking_lot():
 		# Define the x and y coordinates along with conditions for each piecewise section of the parking lot
 		equations = [
-			(-122, 57.5, None, None, lambda x: -8 * np.ones_like(x)),   # Equation 1: y = -8 {-122 <= x <= 57.5}
-			(-23, -7, None, None, lambda x: -100 * np.ones_like(x)),    # Equation 2: y = -100 {-23 <= x <= -7}
+			(-122, 57.5, None, None, lambda x: -8 * np.ones_like(x)), # Equation 1: y = -8 {-122 <= x <= 57.5}
+			(-23, -7, None, None, lambda x: -100 * np.ones_like(x)), # Equation 2: y = -100 {-23 <= x <= -7}
 			# Equation 3: x = -7 {-100 <= y <= -86}
 			# Equation 4: x = -23 {-100 <= y <= -86}
 			# Equation 5: x = 57.5 {-8 <= y <= 55}
@@ -89,8 +89,8 @@ def lifetime_savage():
 			# Equation 8: y = 0.2[(x + 17.35)^3] - 50 {-80 <= y <= -20}
 			# Equation 9: y = 0.2[(x + 6.68)^3] - 50 {-80 <= y <= -20}
 			# Equation 10: y = 0.2[(x + 12.01)^3] - 50 {-80 <= y <= -20}
-			# Equation 11: y = -80 {-17.33 <= x <= -11.99}
-			# Equation 12: y = -20 {-6.7 <= x <= -1.36}
+			(-17.33, -11.99, None, None, lambda x: -80 * np.ones_like(x)), # Equation 11: y = -80 {-17.33 <= x <= -11.99}
+			(-6.7, -1.36, None, None, lambda x: -20 * np.ones_like(x)), # Equation 12: y = -20 {-6.7 <= x <= -1.36}
 			# Equation 13: y = -20 {-39 <= x <= -12.02}
 			# Equation 14: y = [-2^(x+31.9)] - 30 {-53.6 <= y <= -30.00732}
 			# Equation 15: x = .1[(y + 25)^2] - 41.5 {-30.01 <= y <= -20}
@@ -128,13 +128,13 @@ def lifetime_savage():
 
 		for (x_start, x_end, y_start, y_end, func) in equations:
 			x_vals = np.linspace(x_start, x_end, 400) if x_start is not None else np.linspace(-100, 100, 400)
-			if func.__name__ == '<lambda>':
+			if func.__name__ == "<lambda>":
 				y_vals = func(x_vals)
-				ax.plot(x_vals, y_vals, zs=0, zdir='z', label='Parking lot')  # Plotting on the ground (z=0)
+				ax.plot(x_vals, y_vals, zs = 0, zdir = "z", label = "Parking lot", color = "gray")  # Plotting on the ground (z=0)
 			else:
 				y_vals = np.linspace(y_start, y_end, 400)
 				x_vals = func(y_vals)
-				ax.plot(x_vals, y_vals, zs=0, zdir='z', label='Parking lot')  # Adjust accordingly for vertical lines
+				ax.plot(x_vals, y_vals, zs = 0, zdir = "z", label = "Parking lot", color = "gray")  # Adjust accordingly for vertical lines
 
 	savage_parking_lot()
 
@@ -157,7 +157,7 @@ def lifetime_savage():
 			]
 
 			# Add the prism to the plot
-			poly = Poly3DCollection([prism_vertices[face] for face in prism_faces], alpha=1, linewidths=1, edgecolors="black")
+			poly = Poly3DCollection([prism_vertices[face] for face in prism_faces], alpha = 1, linewidths = 1, edgecolors = "black")
 			poly.set_facecolor("skyblue")
 			ax.add_collection3d(poly)
 
@@ -180,7 +180,7 @@ def lifetime_savage():
 				]
 
 				# Add the rectangular prism to the plot
-				rect_poly = Poly3DCollection([rect_vertices[face] for face in rect_faces], alpha=1, linewidths=1, edgecolors="black")
+				rect_poly = Poly3DCollection([rect_vertices[face] for face in rect_faces], alpha = 1, linewidths = 1, edgecolors = "black")
 				rect_poly.set_facecolor("skyblue")
 				ax.add_collection3d(rect_poly)
 
@@ -201,7 +201,7 @@ def lifetime_savage():
 				]
 
 				# Add the triangular prism to the plot
-				tri_poly = Poly3DCollection([tri_vertices[face] for face in tri_faces], alpha=1, linewidths=1, edgecolors="black")
+				tri_poly = Poly3DCollection([tri_vertices[face] for face in tri_faces], alpha = 1, linewidths = 1, edgecolors = "black")
 				tri_poly.set_facecolor("skyblue")
 				ax.add_collection3d(tri_poly)
 
@@ -227,7 +227,7 @@ def lifetime_savage():
 				]
 
 				# Add the triangular prism to the plot
-				tri_poly = Poly3DCollection([tri_vertices[face] for face in tri_faces], alpha=1, linewidths=1, edgecolors="black")
+				tri_poly = Poly3DCollection([tri_vertices[face] for face in tri_faces], alpha = 1, linewidths = 1, edgecolors = "black")
 				tri_poly.set_facecolor("skyblue")
 				ax.add_collection3d(tri_poly)
 
@@ -252,7 +252,7 @@ def lifetime_savage():
 				]
 
 				# Add the front tetrahedron to the plot
-				tetra_poly = Poly3DCollection([tetra_vertices[face] for face in tetra_faces], alpha=1, linewidths=1, edgecolors="black")
+				tetra_poly = Poly3DCollection([tetra_vertices[face] for face in tetra_faces], alpha = 1, linewidths = 1, edgecolors = "black")
 				tetra_poly.set_facecolor("skyblue")
 				ax.add_collection3d(tetra_poly)
 
