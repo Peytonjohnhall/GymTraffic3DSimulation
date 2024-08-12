@@ -27,7 +27,7 @@ Estimate: The gym is an estimated 12 meters tall.
 """
 def lifetime_savage():
 	fig = plt.figure()
-	ax = fig.add_subplot(111, projection="3d")
+	ax = fig.add_subplot(111, projection = "3d")
 
 	# Building dimensions
 	length = 100  # length of the building (x-axis)
@@ -574,7 +574,7 @@ def lifetime_savage():
 				]
 
 				# Add the rear tetrahedron to the plot
-				tetra_poly = Poly3DCollection([tetra_vertices[face] for face in tetra_faces], alpha=1, linewidths=1, edgecolors="black")
+				tetra_poly = Poly3DCollection([tetra_vertices[face] for face in tetra_faces], alpha = 1, linewidths = 1, edgecolors = "black")
 				tetra_poly.set_facecolor("skyblue")
 				ax.add_collection3d(tetra_poly)
 
@@ -606,7 +606,7 @@ def lifetime_savage():
 	plt.show()
 
 def Main():
-	prompt = "Which Gym would you like to see?\n1. LifeTime Savage\nEnter your choice: "
+	prompt = "Enter the gym\n1. LifeTime Savage\nEnter your choice: "
 	choice = Validate_Input(prompt)
     
 	if choice == 1:
