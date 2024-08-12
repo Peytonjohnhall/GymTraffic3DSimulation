@@ -606,7 +606,7 @@ def lifetime_savage():
 	plt.show()
 
 def Main():
-	prompt = "Enter the gym\n1. LifeTime Savage\nEnter your choice: "
+	prompt = "Enter the gym.\n1. LifeTime Savage\nEnter your choice: "
 	choice = Validate_Input(prompt)
     
 	if choice == 1:
