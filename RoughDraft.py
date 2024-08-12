@@ -6,18 +6,10 @@ The simulation will dynamically display gym attendance, showing
 virtual people entering and exiting the gym facilities based on hourly traffic data.
 """
 
-# import numpy as np                  # For numerical operations
-# import pandas as pd                 # For data manipulation
-# import matplotlib.pyplot as plt     # For basic plotting
-# from mpl_toolkits.mplot3d import Axes3D  # For 3D plotting in matplotlib
-# import plotly.express as px         # For interactive 3D visualizations
-# import plotly.graph_objects as go   # For detailed control over Plotly plots
-# import datetime                     # For handling date and time data
-# import random                       # For generating random entries/exits
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection  # Ensure this line is included
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection 
 
 def Validate_Input(prompt):
     while True:
@@ -126,44 +118,32 @@ def lifetime_savage():
 			# Plotting the line on the 3D graph
 			ax.plot(x6, y6, z6, color = "gray")
 
-		# Equation 7: y = 0.2[(x + 1.35)^3] - 50 {-80 <= y <= -20}
+		# Equation 7: y = 0.2[(x + 1.35)^3] - 50 {-6.664 <= x <= 3.964}
 		def equation_7():
-			x7 = np.linspace(-100, 100, 400)  # Wide range for x
-			y7 = 0.2 * ((x7 + 1.35) ** 3) - 50
-			valid_indices = (y7 >= -80) & (y7 <= -20)
-			x7 = x7[valid_indices]
-			y7 = y7[valid_indices]
-			z7 = np.zeros(x7.shape)
+			x7 = np.linspace(-6.664, 3.964, 400)
+			y7 = 0.2 * (x7 + 1.35)**3 - 50
+			z7 = np.zeros_like(x7)
 			ax.plot(x7, y7, z7, color = "gray")
 
-		# Equation 8: y = 0.2[(x + 17.35)^3] - 50 {-80 <= y <= -20}
+		# Equation 8: y = 0.2[(x + 17.35)^3] - 50 {-22.67 <= x <= -12.036}
 		def equation_8():
-			x8 = np.linspace(-100, 100, 400)  # Wide range for x
-			y8 = 0.2 * ((x8 + 17.35) ** 3) - 50
-			valid_indices = (y8 >= -80) & (y8 <= -20)
-			x8 = x8[valid_indices]
-			y8 = y8[valid_indices]
-			z8 = np.zeros(x8.shape)
+			x8 = np.linspace(-22.67, -12.036, 400)
+			y8 = 0.2 * (x8 + 17.35)**3 - 50
+			z8 = np.zeros_like(x8)
 			ax.plot(x8, y8, z8, color = "gray")
 
-		# Equation 9: y = 0.2[(x + 6.68)^3] - 50 {-80 <= y <= -20}
+		# Equation 9: y = 0.2[(x + 6.68)^3] - 50 {-11.994 <= x <= -1.3667}
 		def equation_9():
-			x9 = np.linspace(-100, 100, 400)  # Wide range for x
-			y9 = 0.2 * ((x9 + 6.68) ** 3) - 50
-			valid_indices = (y9 >= -80) & (y9 <= -20)
-			x9 = x9[valid_indices]
-			y9 = y9[valid_indices]
-			z9 = np.zeros(x9.shape)
+			x9 = np.linspace(-11.994, -1.3667, 400)
+			y9 = 0.2 * (x9 + 6.68)**3 - 50
+			z9 = np.zeros_like(x9)
 			ax.plot(x9, y9, z9, color = "gray")
 
-		# Equation 10: y = 0.2[(x + 12.01)^3] - 50 {-80 <= y <= -20}
+		# Equation 10: y = 0.2[(x + 12.01)^3] - 50 {-17.324 <= x <= -6.696}
 		def equation_10():
-			x10 = np.linspace(-100, 100, 400)  # Wide range for x
-			y10 = 0.2 * ((x10 + 12.01) ** 3) - 50
-			valid_indices = (y10 >= -80) & (y10 <= -20)
-			x10 = x10[valid_indices]
-			y10 = y10[valid_indices]
-			z10 = np.zeros(x10.shape)
+			x10 = np.linspace(-17.324, -6.696, 400)
+			y10 = 0.2 * (x10 + 12.01)**3 - 50
+			z10 = np.zeros_like(x10)
 			ax.plot(x10, y10, z10, color = "gray")
 
 		# Equation 11: y = -80 {-17.33 <= x <= -11.99}
@@ -187,31 +167,25 @@ def lifetime_savage():
 			z13 = np.zeros(x13.shape)
 			ax.plot(x13, y13, z13, color = "gray")
 
-		# Equation 14: y = [-2^(x+31.9)] - 30 with y range {-53.6 <= y <= -30.00732}
+		# Equation 14: y = [-2^(x + 31.9)] - 30 {-38.99267 <= x <= -27.339}
 		def equation_14():
-			x14 = np.linspace(-100, 0, 400)  # Example range for x
-			y14 = -2**(x14 + 31.9) - 30
-			valid_indices = (y14 >= -53.6) & (y14 <= -30.00732)
-			x14 = x14[valid_indices]
-			y14 = y14[valid_indices]
-			z14 = np.zeros(x14.shape)
+			x14 = np.linspace(-38.99267, -27.339, 400)
+			y14 = -2 ** (x14 + 31.9) - 30
+			z14 = np.zeros_like(x14)
 			ax.plot(x14, y14, z14, color = "gray")
 
-		# Equation 15: x = .1[(y + 25)^2] - 41.5 with y range {-30.01 <= y <= -20}
+		# Equation 15: x = .1[(y + 25)^2] - 41.5 {-30.01 <= y <= -20}
 		def equation_15():
 			y15 = np.linspace(-30.01, -20, 400)
 			x15 = 0.1 * ((y15 + 25)**2) - 41.5
 			z15 = np.zeros(x15.shape)
 			ax.plot(x15, y15, z15, color = "gray")
 
-		# Equation 16: y = 15(x + 27.3) - 53 with y range {-80 <= y <= -53.35}
+		# Equation 16: y = 15(x + 27.3) - 53 {-29.1 <= x <= -27.339}
 		def equation_16():
-			x16 = np.linspace(-100, 100, 400)  # Wide range for x, adjust as needed
+			x16 = np.linspace(-29.1, -27.339, 400)
 			y16 = 15 * (x16 + 27.3) - 53
-			valid_indices = (y16 >= -80) & (y16 <= -53.35)
-			x16 = x16[valid_indices]
-			y16 = y16[valid_indices]
-			z16 = np.zeros(x16.shape)
+			z16 = np.zeros_like(x16)
 			ax.plot(x16, y16, z16, color = "gray")
 
 		# Equation 17: y = -80 {-29.1 <= x <= -22.6}
