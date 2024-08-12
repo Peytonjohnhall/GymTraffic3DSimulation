@@ -77,64 +77,393 @@ def lifetime_savage():
 	ax.add_collection3d(Poly3DCollection(poly3d, facecolors = "tan", linewidths = 1, edgecolors = "black", alpha = .50))
 
 	def savage_parking_lot():
-		# Define the x and y coordinates along with conditions for each piecewise section of the parking lot
-		equations = [
-			(-122, 57.5, None, None, lambda x: -8 * np.ones_like(x)), # Equation 1: y = -8 {-122 <= x <= 57.5}
-			(-23, -7, None, None, lambda x: -100 * np.ones_like(x)), # Equation 2: y = -100 {-23 <= x <= -7}
-			# Equation 3: x = -7 {-100 <= y <= -86}
-			# Equation 4: x = -23 {-100 <= y <= -86}
-			# Equation 5: x = 57.5 {-8 <= y <= 55}
-			# Equation 6: y = 5(x + 120.4) {-50 <= y <= -7.99}
-			# Equation 7: y = 0.2[(x + 1.35)^3] - 50 {-80 <= y <= -20}
-			# Equation 8: y = 0.2[(x + 17.35)^3] - 50 {-80 <= y <= -20}
-			# Equation 9: y = 0.2[(x + 6.68)^3] - 50 {-80 <= y <= -20}
-			# Equation 10: y = 0.2[(x + 12.01)^3] - 50 {-80 <= y <= -20}
-			(-17.33, -11.99, None, None, lambda x: -80 * np.ones_like(x)), # Equation 11: y = -80 {-17.33 <= x <= -11.99}
-			(-6.7, -1.36, None, None, lambda x: -20 * np.ones_like(x)), # Equation 12: y = -20 {-6.7 <= x <= -1.36}
-			# Equation 13: y = -20 {-39 <= x <= -12.02}
-			# Equation 14: y = [-2^(x+31.9)] - 30 {-53.6 <= y <= -30.00732}
-			# Equation 15: x = .1[(y + 25)^2] - 41.5 {-30.01 <= y <= -20}
-			# Equation 16: y = 15(x + 27.3) - 53 {-80 <= y <= -53.35}
-			# Equation 17: y = -80 {-29.1 <= x <= -22.6}
-			# Equation 18: y = -20 {3.96 <= x <= 25}
-			# Equation 19: y = -SQRT[7(x + 130.4)] - 70 {x <= -93.8}
-			# Equation 20: x = -130.4 {-70 <= y <= -50}
-			# Equation 21: y = -86 {-93.83 <= x <= -23}
-			# Equation 22: y = -86 {-7 <= x <= 57.5}
-			# Equation 23: y = .2(x - 57.5) - 86 {57.5 <= x <= 111}
-			# Equation 24: y = -80 {-6.68 <= x <= 21.32}
-			# Equation 25: y = -5(x - 21.3) - 80 {13.37 <= x <= 21.3}
-			# Equation 26: x = -.05(y + 24.5)^2 + 26 {-40.39 <= y <= -20}
-			# Equation 27: y = -6(x-111) - 75.3 {-75.3 <= y <= 25}
-			# Equation 28: y = .2(x - 94.3) + 24.9 {88 <= x <= 94.3}
-			# Equation 29: y = -1.5(x - 88) + 23.64 {80 <= x <= 88}
-			# Equation 30: y = -1.5(x - 88) + 23.64 {49.42 <= x <= 75}
-			# Equation 31: y = 56.5 {-51 <= x <= -43.5}
-			# Equation 32: y = -1.5(x - 57.5) + 55 {44.83 <= x <= 57.5}
-			# Equation 33: x = -51 {56.5 <= y <= 74}
-			# Equation 34: x = -43.5 {56.5 <= y <= 68.5}
-			# Equation 35: y = 74 {-38 <= x <= 44.9}
-			# Equation 36: y = 81.5 {-43.5 <= x <= 49.42667}
-			# Equation 37: y = 1(x + 40) + 72 {-43.5 <= x <= -38}
-			# Equation 38: y = 1(x + 45) + 80 {-51 <= x <= -43.5}
-			# Equation 39: y = -1.5(x - 85) + 45 {82.33 <= x <= 87.34}
-			# Equation 40: y = .8(x - 75) + 43.14 {75 <= x <= 82.34}
-			# Equation 41: y = .8(x - 80) + 35.64 {80 <= x <= 87.34}
-			# Equation 42: y = -98 {-17.33 <= x <= -11.99}
-			# Equation 43: y = -86 {-17.33 <= x <= -11.99}
-			# Equation 44: x = -17.33 {-98 <= y <= -86}
-			# Equation 45: x = -12 {-98 <= y <= -86}
-		]
+		# Equation 1: y = -8 {-122 <= x <= 57.5}
+		def equation_1():
+			x1 = np.linspace(-122, 57.5, 400)
+			y1 = -8 * np.ones(x1.shape)
+			z1 = np.zeros(x1.shape)
+			ax.plot(x1, y1, z1, color = "gray")
 
-		for (x_start, x_end, y_start, y_end, func) in equations:
-			x_vals = np.linspace(x_start, x_end, 400) if x_start is not None else np.linspace(-100, 100, 400)
-			if func.__name__ == "<lambda>":
-				y_vals = func(x_vals)
-				ax.plot(x_vals, y_vals, zs = 0, zdir = "z", label = "Parking lot", color = "gray")  # Plotting on the ground (z=0)
-			else:
-				y_vals = np.linspace(y_start, y_end, 400)
-				x_vals = func(y_vals)
-				ax.plot(x_vals, y_vals, zs = 0, zdir = "z", label = "Parking lot", color = "gray")  # Adjust accordingly for vertical lines
+		# Equation 2: y = -100 {-23 <= x <= -7}
+		def equation_2():
+			x2 = np.linspace(-23, -7, 400)
+			y2 = -100 * np.ones(x2.shape)
+			z2 = np.zeros(x2.shape)
+			ax.plot(x2, y2, z2, color = "gray")
+
+		# Equation 3: x = -7 {-100 <= y <= -86}
+		def equation_3():
+			y3 = np.linspace(-100, -86, 400)
+			x3 = -7 * np.ones(y3.shape)
+			z3 = np.zeros(y3.shape)
+			ax.plot(x3, y3, z3, color = "gray")
+
+		# Equation 4: x = -23 {-100 <= y <= -86}
+		def equation_4():
+			y4 = np.linspace(-100, -86, 400)
+			x4 = -23 * np.ones(y4.shape)
+			z4 = np.zeros(y4.shape)
+			ax.plot(x4, y4, z4, color = "gray")
+
+		# Equation 5: x = 57.5 {-8 <= y <= 55}
+		def equation_5():
+			y5 = np.linspace(-8, 55, 400)
+			x5 = 57.5 * np.ones(y5.shape)
+			z5 = np.zeros(y5.shape)
+			ax.plot(x5, y5, z5, color = "gray")
+
+		# Equation 6: y = 5(x + 120.4) {-50 <= y <= -7.99}
+		def equation_6():
+			# Solving for x when y = -50 and y = -7.99
+			x_start = (-50 - 602) / 5  # This will give the start value for x
+			x_end = (-7.99 - 602) / 5  # This will give the end value for x
+
+			# Create a range of x values between x_start and x_end
+			x6 = np.linspace(x_start, x_end, 400)
+			y6 = 5 * x6 + 602
+			z6 = np.zeros(x6.shape)  # z-axis is always 0 as per your setting
+
+			# Plotting the line on the 3D graph
+			ax.plot(x6, y6, z6, color = "gray")
+
+		# Equation 7: y = 0.2[(x + 1.35)^3] - 50 {-80 <= y <= -20}
+		def equation_7():
+			x7 = np.linspace(-100, 100, 400)  # Wide range for x
+			y7 = 0.2 * ((x7 + 1.35) ** 3) - 50
+			valid_indices = (y7 >= -80) & (y7 <= -20)
+			x7 = x7[valid_indices]
+			y7 = y7[valid_indices]
+			z7 = np.zeros(x7.shape)
+			ax.plot(x7, y7, z7, color = "gray")
+
+		# Equation 8: y = 0.2[(x + 17.35)^3] - 50 {-80 <= y <= -20}
+		def equation_8():
+			x8 = np.linspace(-100, 100, 400)  # Wide range for x
+			y8 = 0.2 * ((x8 + 17.35) ** 3) - 50
+			valid_indices = (y8 >= -80) & (y8 <= -20)
+			x8 = x8[valid_indices]
+			y8 = y8[valid_indices]
+			z8 = np.zeros(x8.shape)
+			ax.plot(x8, y8, z8, color = "gray")
+
+		# Equation 9: y = 0.2[(x + 6.68)^3] - 50 {-80 <= y <= -20}
+		def equation_9():
+			x9 = np.linspace(-100, 100, 400)  # Wide range for x
+			y9 = 0.2 * ((x9 + 6.68) ** 3) - 50
+			valid_indices = (y9 >= -80) & (y9 <= -20)
+			x9 = x9[valid_indices]
+			y9 = y9[valid_indices]
+			z9 = np.zeros(x9.shape)
+			ax.plot(x9, y9, z9, color = "gray")
+
+		# Equation 10: y = 0.2[(x + 12.01)^3] - 50 {-80 <= y <= -20}
+		def equation_10():
+			x10 = np.linspace(-100, 100, 400)  # Wide range for x
+			y10 = 0.2 * ((x10 + 12.01) ** 3) - 50
+			valid_indices = (y10 >= -80) & (y10 <= -20)
+			x10 = x10[valid_indices]
+			y10 = y10[valid_indices]
+			z10 = np.zeros(x10.shape)
+			ax.plot(x10, y10, z10, color = "gray")
+
+		# Equation 11: y = -80 {-17.33 <= x <= -11.99}
+		def equation_11():
+			x11 = np.linspace(-17.33, -11.99, 400)
+			y11 = -80 * np.ones(x11.shape)
+			z11 = np.zeros(x11.shape)
+			ax.plot(x11, y11, z11, color = "gray")
+
+		# Equation 12: y = -20 {-6.7 <= x <= -1.36}
+		def equation_12():
+			x12 = np.linspace(-6.7, -1.36, 400)
+			y12 = -20 * np.ones(x12.shape)
+			z12 = np.zeros(x12.shape)
+			ax.plot(x12, y12, z12, color = "gray")
+
+		# Equation 13: y = -20 {-39 <= x <= -12.02}
+		def equation_13():
+			x13 = np.linspace(-39, -12.02, 400)
+			y13 = -20 * np.ones(x13.shape)
+			z13 = np.zeros(x13.shape)
+			ax.plot(x13, y13, z13, color = "gray")
+
+		# Equation 14: y = [-2^(x+31.9)] - 30 with y range {-53.6 <= y <= -30.00732}
+		def equation_14():
+			x14 = np.linspace(-100, 0, 400)  # Example range for x
+			y14 = -2**(x14 + 31.9) - 30
+			valid_indices = (y14 >= -53.6) & (y14 <= -30.00732)
+			x14 = x14[valid_indices]
+			y14 = y14[valid_indices]
+			z14 = np.zeros(x14.shape)
+			ax.plot(x14, y14, z14, color = "gray")
+
+		# Equation 15: x = .1[(y + 25)^2] - 41.5 with y range {-30.01 <= y <= -20}
+		def equation_15():
+			y15 = np.linspace(-30.01, -20, 400)
+			x15 = 0.1 * ((y15 + 25)**2) - 41.5
+			z15 = np.zeros(x15.shape)
+			ax.plot(x15, y15, z15, color = "gray")
+
+		# Equation 16: y = 15(x + 27.3) - 53 with y range {-80 <= y <= -53.35}
+		def equation_16():
+			x16 = np.linspace(-100, 100, 400)  # Wide range for x, adjust as needed
+			y16 = 15 * (x16 + 27.3) - 53
+			valid_indices = (y16 >= -80) & (y16 <= -53.35)
+			x16 = x16[valid_indices]
+			y16 = y16[valid_indices]
+			z16 = np.zeros(x16.shape)
+			ax.plot(x16, y16, z16, color = "gray")
+
+		# Equation 17: y = -80 {-29.1 <= x <= -22.6}
+		def equation_17():
+			x17 = np.linspace(-29.1, -22.6, 400)
+			y17 = -80 * np.ones(x17.shape)
+			z17 = np.zeros(x17.shape)
+			ax.plot(x17, y17, z17, color = "gray")
+
+		# Equation 18: y = -20 {3.96 <= x <= 25}
+		def equation_18():
+			x18 = np.linspace(3.96, 25, 400)
+			y18 = -20 * np.ones(x18.shape)
+			z18 = np.zeros(x18.shape)
+			ax.plot(x18, y18, z18, color = "gray")
+
+		# Gives warning message but still graphs.
+		# Equation 19: y = -SQRT[7(x + 130.4)] - 70 {x <= -93.8}
+		def equation_19():
+			x19 = np.linspace(-135, -93.8, 400)
+			y19 = -np.sqrt(7 * (x19 + 130.4)) - 70
+			z19 = np.zeros(x19.shape)
+			ax.plot(x19, y19, z19, color = "gray")
+
+		# Equation 20: x = -130.4 {-70 <= y <= -50}
+		def equation_20():
+			y20 = np.linspace(-70, -50, 400)
+			x20 = -130.4 * np.ones(y20.shape)
+			z20 = np.zeros(y20.shape)
+			ax.plot(x20, y20, z20, color = "gray")
+
+		# Equation 21: y = -86 {-93.83 <= x <= -23}
+		def equation_21():
+			x21 = np.linspace(-93.83, -23, 400)
+			y21 = -86 * np.ones_like(x21)
+			z21 = np.zeros_like(x21)
+			ax.plot(x21, y21, z21, color = "gray")
+
+		# Equation 22: y = -86 {-7 <= x <= 57.5}
+		def equation_22():
+			x22 = np.linspace(-7, 57.5, 400)
+			y22 = -86 * np.ones_like(x22)
+			z22 = np.zeros_like(x22)
+			ax.plot(x22, y22, z22, color = "gray")
+
+		# Equation 23: y = .2(x - 57.5) - 86 {57.5 <= x <= 111}
+		def equation_23():
+			x23 = np.linspace(57.5, 111, 400)
+			y23 = 0.2 * (x23 - 57.5) - 86
+			z23 = np.zeros_like(x23)
+			ax.plot(x23, y23, z23, color = "gray")
+
+		# Equation 24: y = -80 {-6.68 <= x <= 21.32}
+		def equation_24():
+			x24 = np.linspace(-6.68, 21.32, 400)
+			y24 = -80 * np.ones_like(x24)
+			z24 = np.zeros_like(x24)
+			ax.plot(x24, y24, z24, color = "gray")
+
+		# Equation 25: y = -5(x - 21.3) - 80 {13.37 <= x <= 21.3}
+		def equation_25():
+			x25 = np.linspace(13.37, 21.3, 400)
+			y25 = -5 * (x25 - 21.3) - 80
+			z25 = np.zeros_like(x25)
+			ax.plot(x25, y25, z25, color = "gray")
+
+		# Equation 26: x = -.05(y + 24.5)^2 + 26 {-40.39 <= y <= -20}
+		def equation_26():
+			y26 = np.linspace(-40.39, -20, 400)
+			x26 = -0.05 * (y26 + 24.5)**2 + 26
+			z26 = np.zeros_like(y26)
+			ax.plot(x26, y26, z26, color = "gray")
+
+		# Equation 27: y = -6(x-111) - 75.3 {-75.3 <= y <= 25}
+		def equation_27():
+			y27 = np.linspace(-75.3, 25, 400)
+			x27 = 111 - (y27 + 75.3) / 6
+			z27 = np.zeros_like(x27)
+			ax.plot(x27, y27, z27, color = "gray")
+
+		# Equation 28: y = .2(x - 94.3) + 24.9 {88 <= x <= 94.3}
+		def equation_28():
+			x28 = np.linspace(88, 94.3, 400)
+			y28 = 0.2 * (x28 - 94.3) + 24.9
+			z28 = np.zeros_like(x28)
+			ax.plot(x28, y28, z28, color = "gray")
+
+		# Equation 29: y = -1.5(x - 88) + 23.64 {80 <= x <= 88}
+		def equation_29():
+			x29 = np.linspace(80, 88, 400)
+			y29 = -1.5 * (x29 - 88) + 23.64
+			z29 = np.zeros_like(x29)
+			ax.plot(x29, y29, z29, color = "gray")
+
+		# Equation 30: y = -1.5(x - 88) + 23.64 {49.42 <= x <= 75}
+		def equation_30():
+			x30 = np.linspace(49.42, 75, 400)
+			y30 = -1.5 * (x30 - 88) + 23.64
+			z30 = np.zeros_like(x30)
+			ax.plot(x30, y30, z30, color = "gray")
+
+		# Equation 31: y = 56.5 {-51 <= x <= -43.5}
+		def equation_31():
+			x31 = np.linspace(-51, -43.5, 400)
+			y31 = 56.5 * np.ones_like(x31)
+			z31 = np.zeros_like(x31)
+			ax.plot(x31, y31, z31, color = "gray")
+
+		# Equation 32: y = -1.5(x - 57.5) + 55 {44.83 <= x <= 57.5}
+		def equation_32():
+			x32 = np.linspace(44.83, 57.5, 400)
+			y32 = -1.5 * (x32 - 57.5) + 55
+			z32 = np.zeros_like(x32)
+			ax.plot(x32, y32, z32, color = "gray")
+
+		# Equation 33: x = -51 {56.5 <= y <= 74}
+		def equation_33():
+			y33 = np.linspace(56.5, 74, 400)
+			x33 = -51 * np.ones_like(y33)
+			z33 = np.zeros_like(y33)
+			ax.plot(x33, y33, z33, color = "gray")
+
+		# Equation 34: x = -43.5 {56.5 <= y <= 68.5}
+		def equation_34():
+			y34 = np.linspace(56.5, 68.5, 400)
+			x34 = -43.5 * np.ones_like(y34)
+			z34 = np.zeros_like(y34)
+			ax.plot(x34, y34, z34, color = "gray")
+
+		# Equation 35: y = 74 {-38 <= x <= 44.9}
+		def equation_35():
+			x35 = np.linspace(-38, 44.9, 400)
+			y35 = 74 * np.ones_like(x35)
+			z35 = np.zeros_like(x35)
+			ax.plot(x35, y35, z35, color = "gray")
+
+		# Equation 36: y = 81.5 {-43.5 <= x <= 49.42667}
+		def equation_36():
+			x36 = np.linspace(-43.5, 49.42667, 400)
+			y36 = 81.5 * np.ones_like(x36)
+			z36 = np.zeros_like(x36)
+			ax.plot(x36, y36, z36, color = "gray")
+
+		# Equation 37: y = 1(x + 40) + 72 {-43.5 <= x <= -38}
+		def equation_37():
+			x37 = np.linspace(-43.5, -38, 400)
+			y37 = 1 * (x37 + 40) + 72
+			z37 = np.zeros_like(x37)
+			ax.plot(x37, y37, z37, color = "gray")
+
+		# Equation 38: y = 1(x + 45) + 80 {-51 <= x <= -43.5}
+		def equation_38():
+			x38 = np.linspace(-51, -43.5, 400)
+			y38 = 1 * (x38 + 45) + 80
+			z38 = np.zeros_like(x38)
+			ax.plot(x38, y38, z38, color = "gray")
+
+		# Equation 39: y = -1.5(x - 85) + 45 {82.33 <= x <= 87.34}
+		def equation_39():
+			x39 = np.linspace(82.33, 87.34, 400)
+			y39 = -1.5 * (x39 - 85) + 45
+			z39 = np.zeros_like(x39)
+			ax.plot(x39, y39, z39, color = "gray")
+
+		# Equation 40: y = .8(x - 75) + 43.14 {75 <= x <= 82.34}
+		def equation_40():
+			x40 = np.linspace(75, 82.34, 400)
+			y40 = 0.8 * (x40 - 75) + 43.14
+			z40 = np.zeros_like(x40)
+			ax.plot(x40, y40, z40, color = "gray")
+
+		# Equation 41: y = .8(x - 80) + 35.64 {80 <= x <= 87.34}
+		def equation_41():
+			x41 = np.linspace(80, 87.34, 400)
+			y41 = 0.8 * (x41 - 80) + 35.64
+			z41 = np.zeros_like(x41)
+			ax.plot(x41, y41, z41, color = "gray")
+
+		# Equation 42: y = -98 {-17.33 <= x <= -11.99}
+		def equation_42():
+			x42 = np.linspace(-17.33, -11.99, 400)
+			y42 = -98 * np.ones_like(x42)
+			z42 = np.zeros_like(x42)
+			ax.plot(x42, y42, z42, color = "gray")
+
+		# Equation 43: y = -86 {-17.33 <= x <= -11.99}
+		def equation_43():
+			x43 = np.linspace(-17.33, -11.99, 400)
+			y43 = -86 * np.ones_like(x43)
+			z43 = np.zeros_like(x43)
+			ax.plot(x43, y43, z43, color = "gray")
+
+		# Equation 44: x = -17.33 {-98 <= y <= -86}
+		def equation_44():
+			y44 = np.linspace(-98, -86, 400)
+			x44 = -17.33 * np.ones_like(y44)
+			z44 = np.zeros_like(y44)
+			ax.plot(x44, y44, z44, color = "gray")
+
+		# Equation 45: x = -12 {-98 <= y <= -86}
+		def equation_45():
+			y45 = np.linspace(-98, -86, 400)
+			x45 = -12 * np.ones_like(y45)
+			z45 = np.zeros_like(y45)
+			ax.plot(x45, y45, z45, color = "gray")
+
+		# Calling all the functions
+		equation_1()
+		equation_2()
+		equation_3()
+		equation_4()
+		equation_5()
+		equation_6()
+		equation_7()
+		equation_8()
+		equation_9()
+		equation_10()
+		equation_11()
+		equation_12()
+		equation_13()
+		equation_14()
+		equation_15()
+		equation_16()
+		equation_17()
+		equation_18()
+		equation_19()
+		equation_20()
+		equation_21()
+		equation_22()
+		equation_23()
+		equation_24()
+		equation_25()
+		equation_26()
+		equation_27()
+		equation_28()
+		equation_29()
+		equation_30()
+		equation_31()
+		equation_32()
+		equation_33()
+		equation_34()
+		equation_35()
+		equation_36()
+		equation_37()
+		equation_38()
+		equation_39()
+		equation_40()
+		equation_41()
+		equation_42()
+		equation_43()
+		equation_44()
+		equation_45()
 
 	savage_parking_lot()
 
