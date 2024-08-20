@@ -1,5 +1,6 @@
 # Author: Peyton J. Hall
 """
+A main driver module to run the simulation.
 This data science project aims to create a three-dimensional 
 simulation of gym traffic for LifeTime Fitness in Savage Minnesota.
 The simulation will dynamically display gym attendance, showing 
