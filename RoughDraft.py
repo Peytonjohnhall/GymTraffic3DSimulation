@@ -11,13 +11,17 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
+""" Hides all the axes and labels """
+def hide_axes(ax):
+    ax.set_axis_off()
+
 def Validate_Input(prompt):
-    while True:
-        user_input = input(prompt)
-        if user_input.isdigit() and int(user_input) == 1:
-            return int(user_input)
-        else:
-            print("Invalid input. Please enter 1 to select LifeTime Savage.")
+	while True:
+		user_input = input(prompt)
+		if user_input == "":
+			return True
+		else:
+			print("Please press Enter to continue.")
 
 """
 LifeTime Savage is 80,000 square feet and rectangular shaped.
@@ -859,11 +863,19 @@ def lifetime_savage():
 	ax.set_zlabel("Height (meters)")
 	ax.set_title("LifeTime Savage")
 
+	def view():
+		# Adjust the camera view
+		ax.view_init(elev = 20, azim = 270)
+		ax.dist = 8 # Smaller values zoom in; larger values zoom out.
+	view()
+
+	hide_axes(ax) # call the hide_axes function.
+
 	# Show the plot
 	plt.show()
 
 def Main():
-	prompt = "Enter the gym.\n1. LifeTime Savage\nEnter your choice: "
+	prompt = "Enter the gym.\nPress Enter to select LifeTime Savage: "
 	choice = Validate_Input(prompt)
     
 	if choice == 1:
@@ -872,8 +884,6 @@ def Main():
 # Call the Main function
 if __name__ == "__main__":
 	Main()
-
-    
 
 """
 The x, y, z Coordinate System:
