@@ -850,7 +850,7 @@ def lifetime_savage():
 	ax.set_xlabel("Length (meters)")
 	ax.set_ylabel("Width (meters)")
 	ax.set_zlabel("Height (meters)")
-	ax.set_title("LifeTime Savage")
+	ax.set_title("")
 
 	def view():
 		# Adjust the camera view
