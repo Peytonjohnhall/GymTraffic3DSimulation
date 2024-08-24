@@ -7,7 +7,7 @@ The simulation will dynamically display gym attendance, showing
 virtual people entering and exiting the gym facilities based on hourly traffic data.
 """
 
-from Infrastructure import lifetime_savage, hide_axes
+from LifeTimeSavage import lifetime_savage, hide_axes
 import matplotlib.pyplot as plt
 
 def Validate_Input(prompt):
