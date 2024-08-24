@@ -3,9 +3,11 @@
 A module to represent the infrastructure of LifeTime in Savage, Minnesota.
 """
 
+import random
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.animation import FuncAnimation
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 """ Hides all the axes and labels """
@@ -21,6 +23,12 @@ Estimate: The gym is an estimated 12 meters tall.
 def lifetime_savage():
 	fig = plt.figure()
 	ax = fig.add_subplot(111, projection = "3d")
+
+	def view():
+		# Adjust the camera view
+		ax.view_init(elev = 20, azim = 270)
+		ax.dist = 8 # Smaller values zoom in; larger values zoom out.
+	view()
 
 	# Building dimensions
 	length = 100  # length of the building (x-axis)
@@ -839,6 +847,107 @@ def lifetime_savage():
 	# Call the atrium function within the main building plot
 	savage_atrium()
 
+	def simulate_gym_traffic():
+		prisms = []
+		person_counter = 0
+		frame_interval = 50  # Number of frames to wait before adding a new person
+
+		""" Function to create a rectangular prism (representing the person) """
+		def create_prism(position, height=1.82, width=0.5, depth=0.3):
+			x, y, z = position
+			vertices = np.array([
+				[x, y, z], [x + width, y, z], [x + width, y + depth, z], [x, y + depth, z],  # Bottom face
+				[x, y, z + height], [x + width, y, z + height], [x + width, y + depth, z + height], [x, y + depth, z + height]  # Top face
+			])
+			faces = [
+				[vertices[j] for j in [0, 1, 5, 4]], [vertices[j] for j in [7, 6, 2, 3]],  # Sides
+				[vertices[j] for j in [0, 1, 2, 3]], [vertices[j] for j in [4, 5, 6, 7]],  # Bottom and Top
+				[vertices[j] for j in [0, 3, 7, 4]], [vertices[j] for j in [1, 2, 6, 5]]   # Other Sides
+			]
+			return faces
+
+		""" Position 1 is in the parking lot. """
+		def position1():
+			quadrant_choice = random.choice(["QIV", "QIII"])
+			return np.array([50, -50, 0] if quadrant_choice == "QIV" else [-50, -50, 0])
+
+		""" Position 2 is at the outside doors of the atrium. """
+		def position2(start_pos):
+			return np.array([7/2, -4, 0] if start_pos[0] > 0 else [-7/2, -4, 0])
+
+		""" Position 3 is at the front checkin desk. """
+		def position3():
+			return np.array([0, 0, 0])
+
+		""" Position 4 is inside the gym. """
+		def position4():
+			x = random.uniform(-64, 36)
+			y = random.uniform(0, 56.5)
+			return np.array([x, y, 0])
+
+		""" Function to generate a random color for each new person """
+		def random_color():
+			return (random.random(), random.random(), random.random())
+
+		""" Legend function to display person count """
+		def legend():
+			return f"Person count: {len(prisms)}"
+
+		# Display person count on the graph
+		text_handle = ax.text2D(0.05, 0.95, legend(), transform=ax.transAxes, fontsize=12)
+
+		""" Function to interpolate positions for smoother transitions between key points """
+		def interpolate_positions(pos1, pos2, steps):
+			return [pos1 + (pos2 - pos1) * i / steps for i in range(steps)]
+
+		""" Function to add a new person at position 1 and manage their movement through positions """
+		def add_person():
+			nonlocal person_counter
+			start_pos = position1()
+			positions = [start_pos, position2(start_pos), position3()]
+			positions.extend(position4() for _ in range(10))  # Move randomly 10 times within the specified area
+			smooth_positions = []
+			for i in range(len(positions) - 1):
+				smooth_positions.extend(interpolate_positions(positions[i], positions[i+1], 50))
+
+			color = random_color()
+			prism = Poly3DCollection(create_prism(start_pos), color=color, alpha=0.7)
+			ax.add_collection3d(prism)
+			prisms.append({
+				'prism': prism,
+				'positions': smooth_positions,
+				'current_frame': 0
+			})
+			person_counter += 1
+			text_handle.set_text(legend())  # Update legend text
+
+		""" Update function for the animation, managing the position of each person frame by frame """
+		def update(frame):
+			nonlocal prisms
+			if frame % frame_interval == 0 and person_counter < 50:
+				start_pos = position1()
+				color = random_color()
+				prism = Poly3DCollection(create_prism(start_pos), color=color, alpha=0.7)
+				ax.add_collection3d(prism)
+				prisms.append(prism)
+				text_handle.set_text(f"Person count: {len(prisms)}")  # Update person count
+
+		ani = FuncAnimation(fig, update, frames=1000, interval=100, blit=False)
+
+		# Reassert plot limits and aspect ratio after simulation setup
+		ax.set_xlim([-135, 135])
+		ax.set_ylim([-135, 135])
+		ax.set_zlim([0, 135])
+		ax.set_box_aspect([1, 1, 1])  # Ratios between width, length, and height
+
+		# Call hide_axes to ensure axes are hidden after simulation
+		hide_axes(ax)
+
+		# Call the view function
+		view()
+
+		plt.show()
+	simulate_gym_traffic()
 
 	# Setting the aspect of the plot to be equal, to maintain scaling on all axes
 	ax.set_box_aspect([1, 1, 1])  # Ratios between width, length, and height
@@ -851,12 +960,6 @@ def lifetime_savage():
 	ax.set_ylabel("Width (meters)")
 	ax.set_zlabel("Height (meters)")
 	ax.set_title("")
-
-	def view():
-		# Adjust the camera view
-		ax.view_init(elev = 20, azim = 270)
-		ax.dist = 8 # Smaller values zoom in; larger values zoom out.
-	view()
 
 	hide_axes(ax) # call the hide_axes function.
 
