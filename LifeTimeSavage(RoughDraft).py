@@ -853,7 +853,7 @@ def lifetime_savage():
 		frame_interval = 50  # Number of frames to wait before adding a new person
 
 		""" Function to create a rectangular prism (representing the person) """
-		def create_prism(position, height=1.82, width=0.5, depth=0.3):
+		def create_prism(position, height = 1.82, width = 0.5, depth = 0.3):
 			x, y, z = position # Unpack the position tuple into x, y, z coordinates
 			# Define vertices of the prism
 			vertices = np.array([
@@ -896,7 +896,7 @@ def lifetime_savage():
 			return f"Person count: {len(prisms)}" # Return a string with the current person count
 
 		# Display person count on the graph
-		text_handle = ax.text2D(0.05, 0.95, legend(), transform=ax.transAxes, fontsize=12)
+		text_handle = ax.text2D(0.05, 0.95, legend(), transform = ax.transAxes, fontsize = 12)
 
 		""" Function to interpolate positions for smoother transitions between key points """
 		def interpolate_positions(pos1, pos2, steps):
@@ -911,16 +911,16 @@ def lifetime_savage():
 			smooth_positions = [] # List for interpolated positions
 			for i in range(len(positions) - 1):
 				# Interpolate between positions
-				smooth_positions.extend(interpolate_positions(positions[i], positions[i+1], 50))
+				smooth_positions.extend(interpolate_positions(positions[i], positions[i + 1], 50))
 
 			color = random_color()
 			# Create a 3D polygon collection
-			prism = Poly3DCollection(create_prism(start_pos), color=color, alpha=0.7)
+			prism = Poly3DCollection(create_prism(start_pos), color = color, alpha = 0.7)
 			ax.add_collection3d(prism) # Add the prism to the axes
 			prisms.append({
-				'prism': prism,
-				'positions': smooth_positions,
-				'current_frame': 0
+				"prism": prism,
+				"positions": smooth_positions,
+				"current_frame": 0
 			})
 			person_counter += 1 # Increment the person counter
 			text_handle.set_text(legend())  # Update the legend text
@@ -932,13 +932,13 @@ def lifetime_savage():
 				start_pos = position1() # Get the start position
 				color = random_color() # Get a random color
 				# Create a 3D polygon collection
-				prism = Poly3DCollection(create_prism(start_pos), color=color, alpha=0.7)
+				prism = Poly3DCollection(create_prism(start_pos), color = color, alpha = 0.7)
 				ax.add_collection3d(prism) # Add the prism to the axes
 				prisms.append(prism) # Add the prism to the list
 				text_handle.set_text(f"Person count: {len(prisms)}") # Update the legend text
 
 		# Create an animation
-		ani = FuncAnimation(fig, update, frames=1000, interval=100, blit=False)
+		ani = FuncAnimation(fig, update, frames = 1000, interval = 100, blit = False)
 
 		# Set plot limits and aspect ratio after simulation setup
 		ax.set_xlim([-135, 135])
@@ -948,7 +948,7 @@ def lifetime_savage():
 
 		hide_axes(ax) # Call hide_axes to ensure axes are hidden after simulation
 		view() # Call the view function
-		
+
 		plt.show() # Show the plot
 	simulate_gym_traffic()
 
