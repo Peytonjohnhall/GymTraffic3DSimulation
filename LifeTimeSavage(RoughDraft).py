@@ -848,17 +848,19 @@ def lifetime_savage():
 	savage_atrium()
 
 	def simulate_gym_traffic():
-		prisms = []
-		person_counter = 0
+		prisms = [] # Initialize an empty list to store each person represented as a prism
+		person_counter = 0 # Counter to keep track of the number of people added
 		frame_interval = 50  # Number of frames to wait before adding a new person
 
 		""" Function to create a rectangular prism (representing the person) """
 		def create_prism(position, height=1.82, width=0.5, depth=0.3):
-			x, y, z = position
+			x, y, z = position # Unpack the position tuple into x, y, z coordinates
+			# Define vertices of the prism
 			vertices = np.array([
 				[x, y, z], [x + width, y, z], [x + width, y + depth, z], [x, y + depth, z],  # Bottom face
 				[x, y, z + height], [x + width, y, z + height], [x + width, y + depth, z + height], [x, y + depth, z + height]  # Top face
 			])
+			# Define faces of the prism using vertices
 			faces = [
 				[vertices[j] for j in [0, 1, 5, 4]], [vertices[j] for j in [7, 6, 2, 3]],  # Sides
 				[vertices[j] for j in [0, 1, 2, 3]], [vertices[j] for j in [4, 5, 6, 7]],  # Bottom and Top
@@ -881,72 +883,73 @@ def lifetime_savage():
 
 		""" Position 4 is inside the gym. """
 		def position4():
-			x = random.uniform(-64, 36)
-			y = random.uniform(0, 56.5)
-			return np.array([x, y, 0])
+			x = random.uniform(-64, 36) # Random x within range
+			y = random.uniform(0, 56.5) # Random y within range
+			return np.array([x, y, 0]) # Return the position
 
 		""" Function to generate a random color for each new person """
 		def random_color():
-			return (random.random(), random.random(), random.random())
+			return (random.random(), random.random(), random.random()) # Return a tuple of RGB values
 
 		""" Legend function to display person count """
 		def legend():
-			return f"Person count: {len(prisms)}"
+			return f"Person count: {len(prisms)}" # Return a string with the current person count
 
 		# Display person count on the graph
 		text_handle = ax.text2D(0.05, 0.95, legend(), transform=ax.transAxes, fontsize=12)
 
 		""" Function to interpolate positions for smoother transitions between key points """
 		def interpolate_positions(pos1, pos2, steps):
-			return [pos1 + (pos2 - pos1) * i / steps for i in range(steps)]
+			return [pos1 + (pos2 - pos1) * i / steps for i in range(steps)] # Linear interpolation
 
 		""" Function to add a new person at position 1 and manage their movement through positions """
 		def add_person():
-			nonlocal person_counter
-			start_pos = position1()
-			positions = [start_pos, position2(start_pos), position3()]
-			positions.extend(position4() for _ in range(10))  # Move randomly 10 times within the specified area
-			smooth_positions = []
+			nonlocal person_counter # Refer to the outer scope variable
+			start_pos = position1() # Get the start position
+			positions = [start_pos, position2(start_pos), position3()] # List of positions to traverse
+			positions.extend(position4() for _ in range(10)) # Add 10 random movements within gym
+			smooth_positions = [] # List for interpolated positions
 			for i in range(len(positions) - 1):
+				# Interpolate between positions
 				smooth_positions.extend(interpolate_positions(positions[i], positions[i+1], 50))
 
 			color = random_color()
+			# Create a 3D polygon collection
 			prism = Poly3DCollection(create_prism(start_pos), color=color, alpha=0.7)
-			ax.add_collection3d(prism)
+			ax.add_collection3d(prism) # Add the prism to the axes
 			prisms.append({
 				'prism': prism,
 				'positions': smooth_positions,
 				'current_frame': 0
 			})
-			person_counter += 1
-			text_handle.set_text(legend())  # Update legend text
+			person_counter += 1 # Increment the person counter
+			text_handle.set_text(legend())  # Update the legend text
 
 		""" Update function for the animation, managing the position of each person frame by frame """
 		def update(frame):
-			nonlocal prisms
-			if frame % frame_interval == 0 and person_counter < 50:
-				start_pos = position1()
-				color = random_color()
+			nonlocal prisms # Refer to the outer scope variable
+			if frame % frame_interval == 0 and person_counter < 50: # Check if it's time to add a new person
+				start_pos = position1() # Get the start position
+				color = random_color() # Get a random color
+				# Create a 3D polygon collection
 				prism = Poly3DCollection(create_prism(start_pos), color=color, alpha=0.7)
-				ax.add_collection3d(prism)
-				prisms.append(prism)
-				text_handle.set_text(f"Person count: {len(prisms)}")  # Update person count
+				ax.add_collection3d(prism) # Add the prism to the axes
+				prisms.append(prism) # Add the prism to the list
+				text_handle.set_text(f"Person count: {len(prisms)}") # Update the legend text
 
+		# Create an animation
 		ani = FuncAnimation(fig, update, frames=1000, interval=100, blit=False)
 
-		# Reassert plot limits and aspect ratio after simulation setup
+		# Set plot limits and aspect ratio after simulation setup
 		ax.set_xlim([-135, 135])
 		ax.set_ylim([-135, 135])
 		ax.set_zlim([0, 135])
 		ax.set_box_aspect([1, 1, 1])  # Ratios between width, length, and height
 
-		# Call hide_axes to ensure axes are hidden after simulation
-		hide_axes(ax)
-
-		# Call the view function
-		view()
-
-		plt.show()
+		hide_axes(ax) # Call hide_axes to ensure axes are hidden after simulation
+		view() # Call the view function
+		
+		plt.show() # Show the plot
 	simulate_gym_traffic()
 
 	# Setting the aspect of the plot to be equal, to maintain scaling on all axes
