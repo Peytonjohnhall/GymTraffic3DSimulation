@@ -846,7 +846,7 @@ def lifetime_savage():
 		person_counter = 0  # Counter to keep track of the number of people added
 		frame_interval = 50  # Number of frames to wait before adding a new person
 
-		def create_prism(position, height=1.82, width=0.5, depth=0.3):
+		def create_prism(position, height = 1.82, width = 0.5, depth = 0.3):
 			x, y, z = position  # Unpack the position tuple into x, y, z coordinates
 			vertices = np.array([
 				[x, y, z], [x + width, y, z], [x + width, y + depth, z], [x, y + depth, z],
@@ -911,7 +911,7 @@ def lifetime_savage():
 			return f"Person count: {len(prisms)}" # Return a string with the current person count
 
 		# Display person count on the graph
-		text_handle = ax.text2D(0.05, 0.95, legend(), transform=ax.transAxes, fontsize=12)
+		text_handle = ax.text2D(0.05, 0.95, legend(), transform = ax.transAxes, fontsize = 12)
 
 		""" Function to interpolate positions for smoother transitions between key points """
 		def interpolate_positions(pos1, pos2, steps):
@@ -932,7 +932,7 @@ def lifetime_savage():
 				smooth_positions.extend(interpolate_positions(positions[i], positions[i + 1], frame_interval))
 			color = random_color()
 			# Create a 3D polygon collection
-			prism = Poly3DCollection(create_prism(start_pos), color=color, alpha=0.7)
+			prism = Poly3DCollection(create_prism(start_pos), color = color, alpha = 0.7)
 			ax.add_collection3d(prism) # Add the prism to the axes
 			prisms.append({
 				"prism": prism,
@@ -957,7 +957,7 @@ def lifetime_savage():
 					prisms.remove(person) # Remove from tracking list
 
 		# Create an animation
-		ani = FuncAnimation(fig, update, frames=1000, interval=100, blit=False)
+		ani = FuncAnimation(fig, update, frames = 1000, interval = 100, blit = False)
 		ax.set_xlim([-135, 135])
 		ax.set_ylim([-135, 135])
 		ax.set_zlim([0, 135])
@@ -967,7 +967,6 @@ def lifetime_savage():
 		plt.show()
 
 	simulate_gym_traffic()
-
 
 	# Setting the aspect of the plot to be equal, to maintain scaling on all axes
 	ax.set_box_aspect([1, 1, 1])  # Ratios between width, length, and height
