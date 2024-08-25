@@ -927,15 +927,14 @@ def lifetime_savage():
 
 		""" Update function for the animation, managing the position of each person frame by frame """
 		def update(frame):
-			nonlocal prisms # Refer to the outer scope variable
-			if frame % frame_interval == 0 and person_counter < 50: # Check if it's time to add a new person
-				start_pos = position1() # Get the start position
-				color = random_color() # Get a random color
-				# Create a 3D polygon collection
-				prism = Poly3DCollection(create_prism(start_pos), color = color, alpha = 0.7)
-				ax.add_collection3d(prism) # Add the prism to the axes
-				prisms.append(prism) # Add the prism to the list
-				text_handle.set_text(f"Person count: {len(prisms)}") # Update the legend text
+			nonlocal prisms  # Refer to the outer scope variable
+			if frame % frame_interval == 0 and person_counter < 50:  # Check if it's time to add a new person
+				add_person()
+			for person in prisms:  # Iterate through each person in the prisms list
+				if person["current_frame"] < len(person["positions"]):  # Check if there are more positions to move to
+					position = person["positions"][person["current_frame"]]  # Get the next position
+					person["prism"].set_verts(create_prism(position))  # Update the prism's vertices to the new position
+					person["current_frame"] += 1  # Increment the current frame index
 
 		# Create an animation
 		ani = FuncAnimation(fig, update, frames = 1000, interval = 100, blit = False)
