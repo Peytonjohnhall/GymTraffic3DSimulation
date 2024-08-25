@@ -868,10 +868,22 @@ def lifetime_savage():
 			]
 			return faces
 
-		""" Position 1 is in the parking lot. """
+		""" Position 1, where people spawn, is in the parking lot. """
 		def position1():
 			quadrant_choice = random.choice(["QIV", "QIII"])
-			return np.array([50, -50, 0] if quadrant_choice == "QIV" else [-50, -50, 0])
+			if quadrant_choice == "QIV":
+				# Define the range for x and y coordinates within the defined area for QIV
+				x_min, x_max = 5, 106  # Adjusted according to the provided corners
+				y_min, y_max = -100, -14  # Adjusted according to the provided corners
+			else:
+				# Define the range for x and y coordinates within the defined area for QIII
+				x_min, x_max = -115, -28  # Adjusted according to the provided corners
+				y_min, y_max = -103, -15  # Adjusted according to the provided corners
+
+			# Generate random x and y coordinates within the defined range
+			x = random.uniform(x_min, x_max)
+			y = random.uniform(y_min, y_max)
+			return np.array([x, y, 0])  # Return the position with z-coordinate set to 0
 
 		""" Position 2 is at the outside doors of the atrium. """
 		def position2(start_pos):
